@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Formulario de Materias</title>
+    </h:head>
+    <h:body>
+        
+        <p:card style="margin: 5%">
+            <f:facet name="tittle">
+                Menu
+            </f:facet>
+            <f:view>
+                <h:form id="menu">
+
+                    <p:column style="vertical-align: middle; float: none">
+                        <f:facet name="header">Acciones </f:facet>
+                        
+                        <p:commandButton value="Alumnos" style="width:150px" action="/index.xhtml" ajax="false"/>
+                        <p:spacer width="2%"/>
+                        <p:commandButton value="Materias" style="width:150px" action="/materias.xhtml" ajax="false"/>
+                        <p:spacer width="2%"/>
+                        <p:commandButton value="Inscripciones" style="width:150px" action="/inscripciones.xhtml" ajax="false"/>  
+                        
+                    </p:column>
+                    
+                </h:form>
+            </f:view>
+        </p:card>
+
+        <p:card style="margin: 5%">
+            <f:facet name="tittle">
+                Formulario de Materia
+            </f:facet>
+            <f:view>
+                <h:form id="materiaForm">
+
+                    <h:inputHidden id="id" value="#{materiaController.materia.id}"></h:inputHidden>
+                    <p:panelGrid columns="1" layout="grid">
+                        <p:outputLabel value="Materia"></p:outputLabel>
+                        <p:inputText id="nombre" value="#{materiaController.materia.nombre}"></p:inputText>
+                        <p:outputLabel value="Descripción"></p:outputLabel>
+                        <p:inputText id="descripcion" value="#{materiaController.materia.descripcion}"></p:inputText>
+                        <p:outputLabel value="Código"></p:outputLabel>
+                        <p:inputText id="codigo" value="#{materiaController.materia.codigo}"></p:inputText>
+                        <p:commandButton value="Guardar" actionListener="#{materiaController.guardarMateria}" update="tablaMaterias materiaForm"/>
+                    </p:panelGrid>
+                </h:form>
+            </f:view>
+        </p:card>
+
+        <p:card style="margin: 5%">
+            <h1>Listado de Materias</h1>
+            <h:form id="tablaMaterias">
+                <p:dataTable rows="5" paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPagueLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                             value="#{materiaController.materiasList}" var="materia">
+                    <p:column>
+                        <f:facet name="header">ID </f:facet>
+                        <span>#{materia.id}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Materia </f:facet>
+                        <span>#{materia.nombre}</span>
+                    </p:column>
+                    
+                    <p:column>
+                        <f:facet name="header">Descripcion </f:facet>
+                        <span>#{materia.descripcion}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Codigo </f:facet>
+                        <span>#{materia.codigo}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Acciones </f:facet>
+                        <p:commandButton value="Editar" icon="pi pi-pencil" actionListener="#{materiaController.llenarFormEditar(materia)}" update="tablaMaterias materiaForm"/>
+                        <p:spacer width="10"/>
+                        <p:commandButton value="Eliminar" icon="pi pi-trash" style="background-color: red" action="#{materiaController.eliminarMateria(materia)}" update="tablaMaterias">
+                            <p:confirm header="Confirmar" message="¿Realmente desea eliminar la materia #{materia.nombre}?" icon="pi pi-info-circle"/>
+                        </p:commandButton>                     
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+                </p:confirmDialog>
+
+            </h:form>
+        </p:card>
+
+    </h:body>
+</html>

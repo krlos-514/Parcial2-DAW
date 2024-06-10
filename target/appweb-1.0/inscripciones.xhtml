@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Formulario de Materias</title>
+    </h:head>
+    <h:body>
+
+        <p:card style="margin: 5%">
+            <f:facet name="tittle">
+                Menu
+            </f:facet>
+            <f:view>
+                <h:form id="menu">
+
+                    <p:column style="vertical-align: middle; float: none">
+
+                        <p:commandButton value="Alumnos" style="width:150px" action="/index.xhtml" ajax="false"/>
+                        <p:spacer width="2%"/>
+                        <p:commandButton value="Materias" style="width:150px" action="/materias.xhtml" ajax="false"/>
+                        <p:spacer width="2%"/>
+                        <p:commandButton value="Inscripciones" style="width:150px" action="/inscripciones.xhtml" ajax="false"/>
+
+                    </p:column>
+
+                </h:form>
+            </f:view>
+        </p:card>
+
+        <p:card style="margin: 5%">
+            <f:facet name="tittle">
+                Seleccion
+            </f:facet>
+            <f:view>
+                <h:form id="Titulos">
+                    <p:column style="vertical-align: middle; float: none">
+                        <p:outputLabel value="Buscar Alumno" style="margin: 48px"></p:outputLabel>
+                    </p:column>
+                    <p:spacer width="2%"/>
+                    <p:column style="vertical-align: middle; float: none">
+                        <p:outputLabel value="Buscar Materia" style="margin: 49px"></p:outputLabel>
+                    </p:column>
+                    <p:spacer width="15%"/>
+                    <p:column style="vertical-align: middle; float: none">
+                        <p:outputLabel value="Año:" style="margin: 5px"></p:outputLabel>
+                        <p:inputText id="anio" value="#{indexController.alumno.nombre}"></p:inputText>
+                    </p:column>
+                    <p:spacer width="2%"/>
+                    <p:column style="vertical-align: middle; float: none">
+                        <p:outputLabel value="Buscar Materia:" style="margin: 5px"></p:outputLabel>
+                        <p:inputText id="ciclo" value="#{indexController.alumno.nombre}"></p:inputText>
+                    </p:column>
+                </h:form>
+                <h:form id="seleccion">
+
+                    <p:column style="vertical-align: middle; float: none">
+
+                        <p:selectOneMenu id="nombre" value="#{indexController.alumno}" style="width:200px">
+                            <f:selectItem itemLabel="Seleccione el alumno" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{indexController.alumnosList}" var="alumno" itemLabel="#{alumno.nombre}" itemValue="#{alumno}"/>
+                        </p:selectOneMenu>
+                        <p:spacer width="3%"/>
+                        <p:selectOneMenu id="nombre2" value="#{materiaController.materia}" style="width:200px">
+                            <f:selectItem itemLabel="Seleccione la materia" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{materiaController.materiasList}" var="materia" itemLabel="#{materia.nombre}" itemValue="#{materia}"/>
+                        </p:selectOneMenu>
+                        <p:spacer width="25%"/>
+                    </p:column>
+                    
+                    <p:column style="vertical-align: middle; float: none">
+                        <p:commandButton value="Guardar" actionListener="#{indexController.llenarFormEditar(alumno)}" style="width:350px; margin: 10px" update="tablaInscripciones"/>
+                    </p:column>
+                </h:form>
+            </f:view>
+        </p:card>
+
+        <p:card style="margin: 5%">
+            <h1>Listado de Inscripciones</h1>
+            <h:form id="tablaInscripciones">
+                <p:dataTable rows="5" paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPagueLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                             value="#{inscripcionController.inscripcionesList}" var="inscripcion">
+                    <p:column>
+                        <f:facet name="header"># </f:facet>
+                        <span>#{inscripcion.id}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Alumno </f:facet>
+                        <span>#{inscripcion.id_alumno}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Materia </f:facet>
+                        <span>#{inscripcion.id_materia}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Ciclo </f:facet>
+                        <span>#{inscripcion.ciclo}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Año </f:facet>
+                        <span>#{inscripcion.anio}</span>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Fecha </f:facet>
+                        <span>#{inscripcion.fechaInscripcion}</span>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+                </p:confirmDialog>
+
+            </h:form>
+        </p:card>
+
+    </h:body>
+</html>
